@@ -38,9 +38,9 @@ def question_2():
     yrange_one = y_cleaned[x_cleaned < 7]
 
     model = stats.linregress(xrange_one, yrange_one)
-
-    t = 1.96
-    ci = (model.slope - (t * model.stderr), model.slope + (t * model.stderr))
+    print('ccdf')
+    z = 1.96
+    ci = (model.slope - (z * model.stderr), model.slope + (z * model.stderr))
     print(ci)
 
 
@@ -49,8 +49,8 @@ def question_2():
 
     model = stats.linregress(xrange_two, yrange_two)
 
-    t = 1.96
-    ci = (model.slope - (t * model.stderr), model.slope + (t * model.stderr))
+    z = 1.96
+    ci = (model.slope - (z * model.stderr), model.slope + (z * model.stderr))
     print(ci)
 
 
@@ -80,27 +80,28 @@ def question_4():
     x_cleaned = x[~np.isnan(x)]
     y_cleaned = y[~np.isnan(x)]
 
-    xrange_one = x_cleaned[(x_cleaned > 7.5) & (x_cleaned < 10)]
-    yrange_one = y_cleaned[(x_cleaned > 7.5) & (x_cleaned < 10)]
+    xrange_one = x_cleaned[y_cleaned < 7.5]
+    yrange_one = y_cleaned[y_cleaned < 7.5]
 
     model = stats.linregress(xrange_one, yrange_one)
 
-    t = 1.96
-    ci = (model.slope - (t * model.stderr), model.slope + (t * model.stderr))
+    print('zipfs')
+    z = 1.96
+    ci = (model.slope - (z * model.stderr), model.slope + (z * model.stderr))
     print(ci)
 
 
-    xrange_two = x_cleaned[x_cleaned < 7.5]
-    yrange_two = y_cleaned[x_cleaned < 7.5]
+    xrange_two = x_cleaned[(y_cleaned > 7.5) & (y_cleaned < 10)]
+    yrange_two = y_cleaned[(y_cleaned > 7.5) & (y_cleaned < 10)]
 
     model = stats.linregress(xrange_two, yrange_two)
 
-    t = 1.96
-    ci = (model.slope - (t * model.stderr), model.slope + (t * model.stderr))
+    z = 1.96
+    ci = (model.slope - (z * model.stderr), model.slope + (z * model.stderr))
     print(ci)
 
 if __name__ == '__main__':
     question_1()
     question_2()
-    # question_3()
+    question_3()
     question_4()
