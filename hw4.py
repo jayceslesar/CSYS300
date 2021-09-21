@@ -26,7 +26,6 @@ def question_1():
     # fig.show()
 
 
-
 def question_2():
     x = np.log10(df['k'])
     y = np.log10(df['ccdf'])
@@ -99,6 +98,7 @@ def question_4():
     z = 1.96
     ci = (model.slope - (z * model.stderr), model.slope + (z * model.stderr))
     print(ci)
+
 
 if __name__ == '__main__':
     question_1()
