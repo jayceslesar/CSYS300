@@ -138,6 +138,7 @@ def question_6():
 
     to_process = [babygirls_1952, babyboys_1952, babygirls_2002, babyboys_2002]
     titles = ['babygirls_1952', 'babyboys_1952', 'babygirls_2002', 'babyboys_2002']
+    total_births = [1_901_995, 1_973_383, 1_974_571, 2_066_133]
 
     for i, df in enumerate(to_process):
         # ccdf
@@ -146,7 +147,7 @@ def question_6():
         n_sub_k = np.asarray(data['count'].values)
         out = pd.DataFrame()
         out['k'] = k
-        out['pdf'] = n_sub_k / n_sub_k.sum()
+        out['pdf'] = n_sub_k / total_births[i]
         out['cdf'] = out['pdf'].sort_values()[::-1].cumsum()
         out['ccdf'] = np.ones(len(out['cdf'])) - out['cdf']
 
@@ -155,7 +156,7 @@ def question_6():
         zipf['y'] = df['count'].sort_values(ascending=False).to_numpy()
         zipf['x'] = np.asarray([i + 1 for i in range(len(df))])
 
-        filtered_ccdf = out[np.log10(out['k']) < 2]
+        filtered_ccdf = out[np.log10(out['k']) < 1.5]
         regr = stats.linregress(np.log10(filtered_ccdf['k']), np.log10(filtered_ccdf['ccdf']))
         gamma = -regr.slope + 1
 
