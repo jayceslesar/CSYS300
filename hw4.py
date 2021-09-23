@@ -25,7 +25,7 @@ def question_1():
     fig.update_layout(title='CDF/CCDF for Google Vocab Dataset')
     fig.update_xaxes(title='log k')
     fig.update_yaxes(title='log distribution function')
-    fig.show()
+    # fig.show()
 
 
 def question_2():
@@ -64,11 +64,11 @@ def question_3():
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(x=np.log10(raw_df['index']), y=np.log10(raw_df['sorted']), name='ZipfsF', mode='lines'))
-    fig.update_layout(title='Zipfs Law')
+    fig.update_layout(title='Zipfs')
     fig.update_xaxes(title='log occurence')
     fig.update_yaxes(title='log rank')
     # fig.show()
-    # fig.write_image('test.png', format='png')
+    fig.write_image('q3.png', format='png')
 
 
 def question_4():
@@ -122,11 +122,10 @@ def question_5():
     alpha_2 = 0.911
 
     print('slope 1')
-    print(f'gamma: {gamma_1}, calculated alpha: {alpha_from_gamma(gamma_1):.3f}')
+    print(f'gamma: {gamma_1:.3f}, calculated alpha: {alpha_from_gamma(gamma_1):.3f}')
     print(f'alpha: {alpha_1}, calculated gamma: {gamma_from_alpha(alpha_1):.3f}')
-    print(gamma_1, alpha_1)
     print('slope 2')
-    print(f'gamma: {gamma_2}, calculated alpha: {alpha_from_gamma(gamma_2):.3f}')
+    print(f'gamma: {gamma_2:.3f}, calculated alpha: {alpha_from_gamma(gamma_2):.3f}')
     print(f'alpha: {alpha_2}, calculated gamma: {gamma_from_alpha(alpha_2):.3f}')
 
 
@@ -157,12 +156,12 @@ def question_6():
         zipf['x'] = np.asarray([i + 1 for i in range(len(df))])
 
         filtered_ccdf = out[np.log10(out['k']) < 1.5]
-        regr = stats.linregress(np.log10(filtered_ccdf['k']), np.log10(filtered_ccdf['ccdf']))
-        gamma = -regr.slope + 1
+        regr_ccdf = stats.linregress(np.log10(filtered_ccdf['k']), np.log10(filtered_ccdf['ccdf']))
+        gamma = -regr_ccdf.slope + 1
 
         filtered_zipf = zipf[np.log10(zipf['x']) > 2]
-        regr = stats.linregress(np.log10(filtered_zipf['x']), np.log10(filtered_zipf['y']))
-        alpha = -regr.slope
+        regr_zipf = stats.linregress(np.log10(filtered_zipf['x']), np.log10(filtered_zipf['y']))
+        alpha = -regr_zipf.slope
 
 
         fig = make_subplots(rows=1, cols=2,
@@ -171,7 +170,10 @@ def question_6():
                             shared_yaxes=False)
 
         fig.add_trace(go.Scatter(x=np.log10(out['k']), y=np.log10(out['ccdf']), name='CCDF', mode='markers'), row=1, col=1)
+        fig.add_trace(go.Scatter(x=np.log10(filtered_ccdf['k']), y=regr_ccdf.intercept + np.log10(filtered_ccdf['k'])*regr_ccdf.slope, name='CCDF fit', mode='lines'), row=1, col=1)
         fig.add_trace(go.Scatter(x=np.log10(zipf['x']), y=np.log10(zipf['y']), name='Zipfs', mode='markers'), row=1, col=2)
+        fig.add_trace(go.Scatter(x=np.log10(filtered_zipf['x']), y=regr_zipf.intercept + np.log10(filtered_zipf['x'])*regr_zipf.slope, name='Zipf fit', mode='lines'), row=1, col=2)
+
 
         fig.show()
 
@@ -181,5 +183,5 @@ if __name__ == '__main__':
     # question_2()
     # question_3()
     # question_4()
-    # question_5()
-    question_6()
+    question_5()
+    # question_6()
