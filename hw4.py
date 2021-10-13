@@ -25,7 +25,7 @@ def question_1():
     fig.update_layout(title='CDF/CCDF for Google Vocab Dataset')
     fig.update_xaxes(title='log k')
     fig.update_yaxes(title='log distribution function')
-    # fig.show()
+    fig.show()
 
 
 def question_2():
@@ -167,7 +167,8 @@ def question_6():
         fig = make_subplots(rows=1, cols=2,
                             subplot_titles=(f'CCDF {titles[i]}, gamma: {gamma:.3f}', f'Zipfs {titles[i]}, alpha: {alpha:.3f}'),
                             specs=[[{"type": "scatter"}, {"type": "scatter"}]],
-                            shared_yaxes=False)
+                            shared_yaxes=False,
+                            horizontal_spacing=0.3)
 
         fig.add_trace(go.Scatter(x=np.log10(out['k']), y=np.log10(out['ccdf']), name='CCDF', mode='markers'), row=1, col=1)
         fig.add_trace(go.Scatter(x=np.log10(filtered_ccdf['k']), y=regr_ccdf.intercept + np.log10(filtered_ccdf['k'])*regr_ccdf.slope, name='CCDF fit', mode='lines'), row=1, col=1)
@@ -175,13 +176,15 @@ def question_6():
         fig.add_trace(go.Scatter(x=np.log10(filtered_zipf['x']), y=regr_zipf.intercept + np.log10(filtered_zipf['x'])*regr_zipf.slope, name='Zipf fit', mode='lines'), row=1, col=2)
 
 
-        fig.show()
+        # fig.show()
+        fig.write_image(f'{titles[i]}.png', format='png')
+
 
 
 if __name__ == '__main__':
-    # question_1()
+    question_1()
     # question_2()
     # question_3()
     # question_4()
-    question_5()
+    # question_5()
     # question_6()
